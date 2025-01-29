@@ -1,0 +1,130 @@
+import React, { useEffect, useState } from "react";
+
+function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [newUser, setNewUser] = useState({ username: "", email: "", password: "", role: "" });
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/users"); // Using Fetch API
+      if (!response.ok) {
+        throw new Error("Failed to fetch users");
+      }
+      const data = await response.json();
+      setUsers(data);
+      //console.log(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setNewUser({ ...newUser, [e.target.name]: e.target.value });
+  };
+
+  const addUser = async () => {
+    if (!newUser.username || !newUser.email || !newUser.password || !newUser.role) {
+      alert("All fields are required!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/add-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add user");
+      }
+
+      setNewUser({ username: "", email: "", password: "", role: "" }); // Clear input fields
+      fetchUsers(); // Refresh the list
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-5">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
+        <h2 className="text-2xl font-bold text-center text-gray-700 mb-4">User List</h2>
+
+        {loading && <p className="text-gray-500 text-center">Loading users...</p>}
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
+        <table className="w-full border-collapse border border-gray-300 mt-4">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">UserID</th>
+              <th className="border p-2">Username</th>
+              <th className="border p-2">Email</th>
+              <th className="border p-2">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map(user => (
+              <tr key={user.UserID} className="text-center">
+                <td className="border p-2">{user.UserID}</td>
+                <td className="border p-2">{user.Username}</td>
+                <td className="border p-2">{user.Email}</td>
+                <td className="border p-2">{user.Role}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <h3 className="text-xl font-semibold mt-6">Add New User</h3>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={newUser.username}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded mt-2"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={newUser.email}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded mt-2"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={newUser.password}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded mt-2"
+        />
+        <input
+          type="text"
+          name="role"
+          placeholder="Role"
+          value={newUser.role}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded mt-2"
+        />
+        <button
+          onClick={addUser}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-3 w-full hover:bg-blue-600"
+        >
+          Add User
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default App;
