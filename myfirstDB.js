@@ -34,6 +34,27 @@ app.get("/users", (req, res) => {
   });
 });
 
+app.get("/Books", (req, resBooks) => {
+  db.query("SELECT * FROM Books", (err, results) => {
+    if (err) {
+      resBooks.status(500).json({ error: err.message });
+    } else {
+      resBooks.json(results);
+    }
+  });
+});
+
+app.get("/Orders", (reqt, resOders) => {
+  db.query("SELECT * FROM Orders", (err, results) => {
+    if (err) {
+      resOders.status(500).json({ error: err.message });
+    } else {
+      resOders.json(results);
+    }
+  });
+});
+
+
 // Add a new user
 app.post("/add-user", (req, res) => {
   const { username, email, password, role } = req.body;
