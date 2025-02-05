@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import configfile from "../../../Data/configReact";
 
 function Books() {
     const [books, setBooks] = useState([]);
 
+    
 
 useEffect(() => {
     fetchBooks();
@@ -12,7 +14,7 @@ useEffect(() => {
   
 const fetchBooks = async () => {    
     try {
-        const response = await fetch("http://localhost:3000/books");
+        const response = await fetch(`http://${configfile.HOST}:3000/books`);
         if (!response.ok) {
         throw new Error("Failed to fetch books");
         }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import configfile from "../../../Data/configReact";
 
 function Orders() {
     const [orders, setOrders] = useState([]);
@@ -12,7 +13,7 @@ useEffect(() => {
   
 const fetchOrders = async () => {    
     try {
-        const response = await fetch("http://localhost:3000/orders");
+        const response = await fetch(`http://${configfile.HOST}:3000/orders`);
         if (!response.ok) {
         throw new Error("Failed to fetch books");
         }

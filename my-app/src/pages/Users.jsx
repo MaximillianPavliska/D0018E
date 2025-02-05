@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import configfile from "../../../Data/configReact";
 
 function Users() {
 const [users, setUsers] = useState([]);
@@ -15,7 +16,7 @@ useEffect(() => {
 
 const fetchUsers = async () => {
   try {
-    const response = await fetch("http://localhost:3000/users"); // Using Fetch API
+    const response = await fetch(`http://${configfile.HOST}:3000/users`); // Using Fetch API
     if (!response.ok) {
       throw new Error("Failed to fetch users");
     }
@@ -40,7 +41,7 @@ const addUser = async () => {
   }
   
   try {
-    const response = await fetch("http://localhost:3000/add-user", {
+    const response = await fetch(`http://${configfile.HOST}:3000/add-user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newUser),
