@@ -22,7 +22,7 @@ const Home = () => {
       const response = await fetch("http://localhost:3000/home", {
         method: "GET",
         headers: {
-          "X-Session-ID": sessionId // 🔥 Send session ID manually
+          "X-Session-ID": sessionId 
         }
       });
 
