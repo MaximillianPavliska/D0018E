@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const cors = require("cors");
 const session = require("express-session");
 const dotenv = require("dotenv");
+const configfile = require("./Data/configNode");
 
 dotenv.config();
 const app = express();
@@ -11,8 +12,9 @@ const port = 3000;
 
 app.use(express.json());
 
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: `http://${configfile.HOST}:5173`,
   credentials: true,
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization"
@@ -29,7 +31,7 @@ app.use(session({
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "1337",
+  password: configfile.pwd,
   database: "mydb",
 });
 
@@ -116,5 +118,5 @@ app.get("/home", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server is running at http://${configfile.HOST}:${port}`);
 });

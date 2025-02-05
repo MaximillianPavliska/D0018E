@@ -6,6 +6,7 @@ import Orders from "./pages/Orders";
 import Books from "./pages/Books";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import configfile from "../../Data/configReact";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -19,7 +20,7 @@ const Home = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:3000/home", {
+      const response = await fetch(`http://${configfile.HOST}:3000/home`, {
         method: "GET",
         headers: {
           "X-Session-ID": sessionId 

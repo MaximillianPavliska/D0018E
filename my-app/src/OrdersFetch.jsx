@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import configfile from "../../Data/configReact";
 
 
     const fetchOrders = async () => {
     try {
-        const response = await fetch("http://localhost:3000/Orders");
+        const response = await fetch(`http://${configfile.HOST}:3000/Orders`);
         if (!response.ok) {
         throw new Error("Failed to fetch books");
         }
