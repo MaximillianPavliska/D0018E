@@ -14,7 +14,7 @@ useEffect(() => {
   
 const fetchBooks = async () => {    
     try {
-        const response = await fetch(`http://${configfile.HOST}:3000/books`);
+        const response = await fetch(`http://${configfile.HOST}:3000/api/books`);
         if (!response.ok) {
         throw new Error("Failed to fetch books");
         }
