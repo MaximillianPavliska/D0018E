@@ -13,7 +13,7 @@ useEffect(() => {
   
 const fetchOrders = async () => {    
     try {
-        const response = await fetch(`http://${configfile.HOST}:3000/api/orders`);
+        const response = await fetch(`http://${configfile.HOST}:3000/orders`);
         if (!response.ok) {
         throw new Error("Failed to fetch books");
         }

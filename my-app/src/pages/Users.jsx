@@ -16,7 +16,7 @@ useEffect(() => {
 
 const fetchUsers = async () => {
   try {
-    const response = await fetch(`http://${configfile.HOST}:3000/api/users`); // Using Fetch API
+    const response = await fetch(`http://${configfile.HOST}:3000/users`); // Using Fetch API
     if (!response.ok) {
       throw new Error("Failed to fetch users");
     }
