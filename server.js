@@ -8,6 +8,7 @@ import usersRoutes from './my-app/src/routes/users.js';
 import ordersRoutes from './my-app/src/routes/orders.js';
 import loginRoutes from './my-app/src/routes/login.js';
 import registerRoutes from './my-app/src/routes/register.js';
+import cartRoutes from './my-app/src/routes/cart.js';
 //import config from './path/to/configNode.js';
 // Load environment variables
 dotenv.config({ path: './dbconf.env' });
@@ -42,8 +43,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api', loginRoutes);
 app.use('/api', registerRoutes);
-
-
+app.use('/api/cart', cartRoutes);
 // Basic route for testing
 app.get('/', (req, res) => {
   res.send('Welcome to the Bookstore API');

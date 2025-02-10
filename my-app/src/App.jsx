@@ -6,6 +6,7 @@ import Orders from "./pages/Orders";
 import Books from "./pages/Books";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Cart from "./pages/Cart";
 import configfile from "../../Data/configReact";
 
 const Home = () => {
@@ -67,6 +68,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/books" element={<Books />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
