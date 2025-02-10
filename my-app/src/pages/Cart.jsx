@@ -26,7 +26,6 @@ function Cart() {
     
       return (
         <div>
-          <Navbar />
           <h1>My Cart</h1>
           {error ? (
             <p>Error: {error}</p>

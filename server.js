@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import booksRoutes from './my-app/src/routes/books.js';
 import usersRoutes from './my-app/src/routes/users.js';
 import ordersRoutes from './my-app/src/routes/orders.js';
+import cartRoutes from './my-app/src/routes/cart.js';
 //import config from './path/to/configNode.js';
 // Load environment variables
 dotenv.config({ path: './dbconf.env' });
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/books', booksRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/orders', ordersRoutes);
+app.use('/api/cart', cartRoutes);
 // Basic route for testing
 app.get('/', (req, res) => {
   res.send('Welcome to the Bookstore API');
