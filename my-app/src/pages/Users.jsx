@@ -7,7 +7,6 @@ function Users() {
 const [users, setUsers] = useState([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
-const [newUser, setNewUser] = useState({ username: "", email: "", password: "", role: "" });
 
 useEffect(() => {
   fetchUsers();
@@ -28,36 +27,6 @@ const fetchUsers = async () => {
     setLoading(false);
   }
 };
-
-
-const handleInputChange = (e) => {
-  setNewUser({ ...newUser, [e.target.name]: e.target.value });
-};
-
-const addUser = async () => {
-  if (!newUser.username || !newUser.email || !newUser.password || !newUser.role) {
-    alert("All fields are required!");
-    return;
-  }
-  
-  try {
-    const response = await fetch(`http://${configfile.HOST}:3000/add-user`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to add user");
-    }
-
-    setNewUser({ username: "", email: "", password: "", role: "" }); // Clear input fields
-    fetchUsers(); // Refresh the list
-  } catch (error) {
-    setError(error.message);
-  }
-};
-
 
 return (
   <div>

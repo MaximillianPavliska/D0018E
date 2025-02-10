@@ -20,12 +20,6 @@ app.use(cors({
   allowedHeaders: "Content-Type,Authorization"
 }));
 
-app.use(session({
-  secret: "VäldigtHemlig",
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 } // 1 hour session
-}));
 
 
 const db = mysql.createConnection({

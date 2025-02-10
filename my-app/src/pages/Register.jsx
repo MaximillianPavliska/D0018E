@@ -12,16 +12,27 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://${configfile.HOST}:3000/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password }),
-    });
-
-    const data = await response.json();
-    setMessage(data.message);
-    if (response.ok) navigate("/login");
+  
+    try {
+      const response = await fetch(`http://${configfile.HOST}:3000/api/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Registration failed.");
+      }
+      setMessage(data.message);
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setMessage(error.message);
+    }
   };
+  
 
   return (
     <div>

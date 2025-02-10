@@ -3,9 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: './dbconf.env' }); // Load environment variables from .env file
 
-console.log('Environment Variables:');
-//sconsole.log(process.env);
-
 if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
   throw new Error('Environment variables not loaded correctly.');
 }

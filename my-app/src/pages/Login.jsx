@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://${configfile.HOST}:3000/login`, {
+    const response = await fetch(`http://${configfile.HOST}:3000/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
