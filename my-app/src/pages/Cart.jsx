@@ -34,6 +34,9 @@ function Cart() {
               <thead>
                 <tr>
                   <th>BookID</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Price</th>
                   <th>Quantity</th>
                 </tr>
               </thead>
@@ -41,6 +44,9 @@ function Cart() {
                 {cartItems.map((item) => (
                   <tr key={item.BookID}>
                     <td>{item.BookID}</td>
+                    <td>{item.Title}</td>
+                    <td>{item.Author}</td>
+                    <td>{item.Price}</td>
                     <td>{item.Quantity}</td>
                   </tr>
                 ))}
