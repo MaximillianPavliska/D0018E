@@ -58,33 +58,36 @@ function Cart() {
           {error ? (
             <p>{error}</p>
           ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>BookID</th>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item) => (
-                  <tr key={item.BookID}>
-                    <td>{item.BookID}</td>
-                    <td>{item.Title}</td>
-                    <td>{item.Author}</td>
-                    <td>{item.Price}</td>
-                    <td>{item.Quantity}</td>
-                    <td>
-                      <button onClick={() => RemoveFromCart(item.BookID)}>
-                        Remove from cart
-                      </button>
-                    </td>
+            <><table>
+                <thead>
+                  <tr>
+                    <th>BookID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {cartItems.map((item) => (
+                    <tr key={item.BookID}>
+                      <td>{item.BookID}</td>
+                      <td>{item.Title}</td>
+                      <td>{item.Author}</td>
+                      <td>{item.Price}</td>
+                      <td>{item.Quantity}</td>
+                      <td>
+                        <button onClick={() => RemoveFromCart(item.BookID)}>
+                          Remove from cart
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button onClick={() => Makeorder()}>
+                Make a Order
+                </button></>
           )}
         </div>
       );

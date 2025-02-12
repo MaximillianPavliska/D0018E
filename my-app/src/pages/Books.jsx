@@ -47,10 +47,22 @@ const addToCart = async (BookID) => {
     }
   };
 
+  const searchbook = async (name) => {
+    alert(name)
+  };  
+
 
      return (
        <div>
          <h1>Books</h1>
+         <div class="search-container">
+          <form action="/action_page.php">
+            <input type="text" placeholder="Search.." name="search" value={name} ></input>
+            <button onClick={() => searchbook(name)}>
+              search
+            </button>
+          </form>
+        </div>
          <table>
           <thead>
             <tr>
