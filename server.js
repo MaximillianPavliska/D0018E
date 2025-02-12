@@ -17,12 +17,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const adress = process.env.DB_ADR;
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 } // 1 hour session
-}));
 
 // Middleware
 app.use(cors({
@@ -41,8 +35,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/books', booksRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/orders', ordersRoutes);
-app.use('/api', loginRoutes);
-app.use('/api', registerRoutes);
+app.use('/api/login', loginRoutes);
+app.use('/api/create-account', registerRoutes);
 app.use('/api/cart', cartRoutes);
 // Basic route for testing
 app.get('/', (req, res) => {
