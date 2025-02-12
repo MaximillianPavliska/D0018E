@@ -15,20 +15,48 @@ function Cart() {
         try {
           const response = await fetch(`http://${configfile.HOST}:3000/api/cart?userId=${userId}`);
           if (!response.ok) {
-            throw new Error("Failed to fetch cart items");
+            throw new Error(" Error No Books in cart");
           }
           const data = await response.json();
-          setCartItems(data);
+          if(data.length === 0){
+            setCartItems([]);
+            setError("Nothing in cart");
+          }
+          else{
+            setCartItems(data);
+          }
         } catch (error) {
-          setError(error.message);
+          setError("Error", error.message);
         }
       };
+
+      const RemoveFromCart = async (BookID) => {    
+        try {
+            const response = await fetch (`http://${configfile.HOST}:3000/api/cart/removefromcart?BookID=${BookID}&userId=${userId}`,{
+            method: "DELETE",
+              headers: {
+                "Content-Type": "application/json"}
+            });
+            if (!response.ok) {
+              throw new Error("Failed to remove book from cart");
+            }
+        
+            const data = await response.json();
+            //console.log("Book removed from cart successfully:", data);
+            fetchCartItems();
+            alert("Book removed from cart!");
+          } catch (error) {
+            console.error("Error removing from cart:", error);
+            setError(error.message);
+          }
+        };
+
     
       return (
         <div>
           <h1>My Cart</h1>
           {error ? (
-            <p>Error: {error}</p>
+            <p>{error}</p>
           ) : (
             <table>
               <thead>
@@ -48,6 +76,11 @@ function Cart() {
                     <td>{item.Author}</td>
                     <td>{item.Price}</td>
                     <td>{item.Quantity}</td>
+                    <td>
+                      <button onClick={() => RemoveFromCart(item.BookID)}>
+                        Remove from cart
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

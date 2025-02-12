@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import configfile from "../../../Data/configReact";
 
 function Books() {
-    const [books, setBooks] = useState([]);    
+    const [books, setBooks] = useState([]); 
+    const userId = 1;   
 
 useEffect(() => {
     fetchBooks();
@@ -31,7 +32,7 @@ const addToCart = async (BookID) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({BookID}),
+        body: JSON.stringify({BookID,userId}),
       });
       if (!response.ok) {
         throw new Error("Failed to add book to cart");
