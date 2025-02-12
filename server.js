@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import authenticate from './my-app/src/auth.js';
 // Import your route files
 import booksRoutes from './my-app/src/routes/books.js';
 import usersRoutes from './my-app/src/routes/users.js';
@@ -43,17 +44,8 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Bookstore API');
 });
 
-app.get("/home", (req, res) => {
-  const sessionId = req.headers["x-session-id"]; // Get session ID from request headers
-
-  if (!sessionId || !req.sessionStore.sessions[sessionId]) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
-
-  // Retrieve session data from session store
-  const sessionData = JSON.parse(req.sessionStore.sessions[sessionId]);
-
-  res.json({ user: sessionData.user });
+app.get('/home', authenticate, (req, res) => {
+  res.json({ user: req.user });  
 });
 
 // Start the server

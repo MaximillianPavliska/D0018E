@@ -14,9 +14,10 @@ const Home = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const sessionId = localStorage.getItem("sessionId"); // Retrieve sessionId
+      const token = localStorage.getItem("token"); // Retrieve token
+      console.log("Token:", token);
 
-      if (!sessionId) {
+      if (!token) {
         console.log("User is not authenticated");
         return;
       }
@@ -24,11 +25,12 @@ const Home = () => {
       const response = await fetch(`http://${configfile.HOST}:3000/home`, {
         method: "GET",
         headers: {
-          "X-Session-ID": sessionId 
+          "Authorization": `Bearer ${token}` // Use token for authentication
         }
       });
 
       const data = await response.json();
+      console.log("Data:", data);  
       if (response.ok) {
         setUser(data.user);
       } else {

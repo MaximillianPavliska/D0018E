@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import configfile from "../../../Data/configReact";
 
@@ -23,7 +23,7 @@ function Login ({ onLogin }) {
 
       const data = await response.json();
       
-      console.log("Login successful:", data.userId);
+      console.log("Login successful:", data.token);
       localStorage.setItem("token", data.token);
     } catch (err) {
       setError(err.message);
