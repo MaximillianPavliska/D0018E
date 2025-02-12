@@ -3,36 +3,32 @@ import db from "../../../db.js";
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+// Route to create a new user account
+router.post("/", async (req, res) => {
   const { username, email, password } = req.body;
+  console.log(username, email, password);
+  try {
+    // Validate input
+    if (!email || !password || !username) {
+      return res.status(400).send("All fields are required.");
+    }
 
-  if (!username || !email || !password) {
-    return res.status(400).json({ error: "All fields are required." });
+    // Insert the new user into the database
+    await db.execute(
+      "INSERT INTO Users (email, password, username, role) VALUES (?, ?, ?, ?)",
+      [email, password, username, "Customer"]
+    );
+
+    res.status(201).send("User account created successfully.");
+  } catch (error) {
+    console.error(error);
+
+    if (error.code === "ER_DUP_ENTRY") {
+      res.status(409).send("An account with this email/username already exists.");
+    } else {
+      res.status(500).send("An error occurred while creating the account.");
+    }
   }
-  
-  console.log("username", username);
-  console.log("email", email); 
-  console.log("password", password);  
-  const [rows] = await db.query("SELECT * FROM users WHERE Username = ? OR Email = ?", [username, email]);
-
-  console.log("rows", rows);
-    if (rows.length > 0) {
-      return res.status(400).json({ error: "Username or email already exists. Please choose another one." });
-    }
-
-  const sql = "INSERT INTO users (Username, Email, Password, Role) VALUES (?, ?, ?, ?)";
-  const values = [username, email, password, "Customer"];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      if (err.code === "ER_DUP_ENTRY") {
-        return res.status(400).json({ error: "Username or email already exists. Please choose another one." });
-      }
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Internal server error. Please try again later." });
-    }
-    res.json({ message: "User registered successfully!" });
-  });
 });
 
 export default router;
