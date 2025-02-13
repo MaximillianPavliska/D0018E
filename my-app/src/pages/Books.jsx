@@ -6,6 +6,7 @@ import configfile from "../../../Data/configReact";
 function Books() {
     const [books, setBooks] = useState([]); 
     const userId = 1;   
+    const [searchInput, setSearchInput] = useState("");
 
 useEffect(() => {
     fetchBooks();
@@ -47,22 +48,35 @@ const addToCart = async (BookID) => {
     }
   };
 
-  const searchbook = async (name) => {
-    alert(name)
-  };  
+  const handleInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleSearch = () => {
+    // Call your search function here
+    alert(searchInput);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
 
      return (
        <div>
          <h1>Books</h1>
-         <div class="search-container">
-          <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search" value={name} ></input>
-            <button onClick={() => searchbook(name)}>
-              search
+         <input
+          type="text"
+          placeholder="Search here"
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
+          value={searchInput} />
+            <button onClick={() => handleSearch()}>
+                Search
             </button>
-          </form>
-        </div>
+
          <table>
           <thead>
             <tr>
