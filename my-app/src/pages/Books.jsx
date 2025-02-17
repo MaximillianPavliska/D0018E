@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function Books() {
     const [books, setBooks] = useState([]); 
-    const userId = localStorage.getItem("userId");   
+    const [user, setUser] = useState(null);
     const [searchInput, setSearchInput] = useState("");
 
 useEffect(() => {
@@ -26,9 +26,38 @@ const fetchBooks = async () => {
   }
 };
 
+    const fetchUserID = async (BookID) => {
+      const token = localStorage.getItem("token"); // Retrieve token
+      console.log("Token:", token);
 
-const addToCart = async (BookID) => {    
+      if (!token) {
+        console.log("User is not authenticated");
+        return;
+      }
+
+      const response = await fetch(`http://${configfile.HOST}:3000/home`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}` // Use token for authentication
+        }
+      });
+
+      const data = await response.json();
+      console.log("Data:", data);  
+      if (response.ok) {
+        setUser(data.user);
+        addToCart(BookID,data.user.UserID)
+      } else {
+        console.log("Not authenticated");
+        setUser(null);
+      }
+    };
+  
+
+  const addToCart = async (BookID,userId) => {   
   try {
+      console.log("Book", BookID)
+      console.log("User", userId)
       const response = await fetch (`http://${configfile.HOST}:3000/api/cart/addtoCart`,{
       method: "POST",
         headers: {
@@ -54,7 +83,8 @@ const addToCart = async (BookID) => {
   };
 
   const handleSearch = () => {
-    // Call your search function here
+    // Call your search function here, for now just alert
+    //fix backend 
     alert(searchInput);
   };
 
@@ -101,7 +131,7 @@ const addToCart = async (BookID) => {
                 <td>{book.Price}</td>
                 <td>{book.Stock}</td>
                 <td>
-                  <button onClick={() => addToCart(book.BookID)}>
+                  <button onClick={() => fetchUserID(book.BookID)}>
                     Add to Cart
                   </button>
                 </td>

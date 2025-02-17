@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {  
   const { userId } = req.query;
+  //console.log("UserID cart", userId)
   if (!userId) {
     return res.status(400).json({ error: "You are not logged in" });
   }
@@ -36,10 +37,10 @@ router.get("/", async (req, res) => {
   });
 
   router.post("/addtoCart", async (req, res) => {
-    const {userId, BookID} = req.body;
+    const {BookID,userId} = req.body;
     
-    //console.log("userId", userId);
-    //console.log("BookID", BookID); 
+    console.log("userId", userId);
+    console.log("BookID", BookID); 
 
     try {
       let cartIDuse;
