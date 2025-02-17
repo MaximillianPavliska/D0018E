@@ -18,6 +18,20 @@ router.get("/", async (req, res) => {
     }
   });
 
+
+  router.get("/:bookId", async (req, res) => {
+    try {
+      const [book] = await db.execute(
+        `SELECT * FROM books WHERE BookID = ?`,
+        [req.params.bookId]
+      );
+      if (book.length === 0) return res.status(404).json({ error: "Book not found" });
+      res.json(book[0]);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch book" });
+    }
+  });
+  
   export default router;
   
   

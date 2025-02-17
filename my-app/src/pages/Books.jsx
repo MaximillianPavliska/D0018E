@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import configfile from "../../../Data/configReact";
+import { Link } from "react-router-dom";
 
 function Books() {
     const [books, setBooks] = useState([]); 
-    const userId = 1;   
+    const userId = localStorage.getItem("userId");   
     const [searchInput, setSearchInput] = useState("");
 
 useEffect(() => {
@@ -93,7 +94,7 @@ const addToCart = async (BookID) => {
             {books.map(book => (
               <tr key={book.BookID}>
                 <td>{book.BookID}</td>
-                <td>{book.Title}</td>
+                <td><Link to={`/books/${book.BookID}`}>{book.Title}</Link></td>
                 <td>{book.Author}</td>   
                 <td>{book.Genre}</td>
                 <td>{book.Pages}</td>

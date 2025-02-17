@@ -7,6 +7,7 @@ import Books from "./pages/Books";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
+import BookDetail from "./pages/BookDetail";
 import configfile from "../../Data/configReact";
 
 const Home = () => {
@@ -15,7 +16,6 @@ const Home = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token"); // Retrieve token
-      console.log("Token:", token);
 
       if (!token) {
         console.log("User is not authenticated");
@@ -30,7 +30,6 @@ const Home = () => {
       });
 
       const data = await response.json();
-      console.log("Data:", data);  
       if (response.ok) {
         setUser(data.user);
       } else {
@@ -72,6 +71,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/books/:bookId" element={<BookDetail />} />
       </Routes>
     </Router>
     </div>

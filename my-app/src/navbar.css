@@ -1,60 +1,50 @@
 /* Navbar container */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1rem;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Logo */
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  /* Navigation links container */
-  .nav-links {
-    display: flex;
-    gap: 20px;
-  }
-  
-  /* Links styling */
-  .nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1rem;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: background 0.3s, color 0.3s;
-  }
-  
-  /* Active link styling */
-  .nav-links .active {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  /* Hover effect on links */
-  .nav-links a:hover {
-    background-color: rgba(0, 123, 255, 0.1);
-  }
-  
-  /* Login button */
-  .btn {
-    padding: 8px 16px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  /* Button hover effect */
-  .btn:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Navigation links container */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+/* Links styling - now applies to both links and buttons */
+.nav-links a,
+.nav-links button {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background 0.3s, color 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Active link styling */
+.nav-links .active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Hover effects */
+.nav-links a:hover,
+.nav-links button:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Specific button styling can be removed since we're using unified styling */

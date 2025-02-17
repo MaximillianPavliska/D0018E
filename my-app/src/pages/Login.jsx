@@ -25,6 +25,7 @@ function Login ({ onLogin }) {
       
       console.log("Login successful:", data.token);
       localStorage.setItem("token", data.token);
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }

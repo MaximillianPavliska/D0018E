@@ -1,8 +1,19 @@
-import { NavLink } from "react-router-dom";
-//import { Button } from "@/components/ui/button";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./navbar.css";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("token") !== null;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    if (location.pathname === "/") {
+      window.location.reload(); // Refresh if already on home
+    } else {
+      navigate("/"); // Normal navigation for other routes
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-links">
@@ -19,11 +30,20 @@ const Navbar = () => {
           Books
         </NavLink>
         <NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>
-            Cart
+          Cart
         </NavLink>
-        <NavLink to="/login" className={({ isActive }) => isActive ? "active" : ""}>
-          Login
-        </NavLink>
+        {isLoggedIn ? (
+          <button 
+            onClick={handleLogout}
+            className="nav-link" // Add this if you need specific class handling
+          >
+            Logout
+          </button>
+        ) : (
+          <NavLink to="/login" className={({ isActive }) => isActive ? "active" : ""}>
+            Login
+          </NavLink>
+        )}
       </div>
     </nav>
   );
