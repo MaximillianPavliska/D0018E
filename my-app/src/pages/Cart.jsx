@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import configfile from "../../../Data/configReact";
+import { Link } from "react-router-dom";
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
@@ -117,7 +118,7 @@ function Cart() {
                   {cartItems.map((item) => (
                     <tr key={item.BookID}>
                       <td>{item.BookID}</td>
-                      <td>{item.Title}</td>
+                      <td><Link to={`/books/${item.BookID}`}>{item.Title}</Link></td>
                       <td>{item.Author}</td>
                       <td>{item.Price}</td>
                       <td>{item.Quantity}</td>
