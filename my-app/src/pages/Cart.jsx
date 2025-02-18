@@ -25,10 +25,11 @@ function Cart() {
 
       const fetchUser = async () => {
         const token = localStorage.getItem("token"); // Retrieve token
-        console.log("Token:", token);
+        //console.log("Token:", token);
   
         if (!token) {
-          console.log("User is not authenticated");
+          //console.log("User is not authenticated");
+          setError("User not logged in");
           return;
         }
   
@@ -46,6 +47,7 @@ function Cart() {
         } else {
           console.log("Not authenticated");
           setUser(null);
+          setError("Not authenticated" )
         }
       };
     
@@ -55,7 +57,6 @@ function Cart() {
           return;
         }
         try {
-          //alert("ja?")
           console.log(user.UserID)
           const response = await fetch(`http://${configfile.HOST}:3000/api/cart?userId=${user.UserID}`);
           if (!response.ok) {
@@ -90,12 +91,15 @@ function Cart() {
             const data = await response.json();
             //console.log("Book removed from cart successfully:", data);
             fetchCartItems();
-            alert("Book removed from cart!");
+            alert(data.message);
           } catch (error) {
             console.error("Error removing from cart:", error);
             setError(error.message);
           }
         };
+
+        const Makeorder = async () => {    
+        }
 
     
       return (
@@ -111,7 +115,8 @@ function Cart() {
                     <th>Title</th>
                     <th>Author</th>
                     <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Quantity in order</th>
+                    <th>in Stock</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,6 +127,7 @@ function Cart() {
                       <td>{item.Author}</td>
                       <td>{item.Price}</td>
                       <td>{item.Quantity}</td>
+                      <td>{item.Stock}</td>
                       <td>
                         <button onClick={() => RemoveFromCart(item.BookID)}>
                           Remove from cart

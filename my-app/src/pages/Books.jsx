@@ -28,9 +28,10 @@ const fetchBooks = async () => {
 
     const fetchUserID = async (BookID) => {
       const token = localStorage.getItem("token"); // Retrieve token
-      console.log("Token:", token);
+      //console.log("Token:", token);
 
       if (!token) {
+        alert("Pleas log in if you want to add book to cart")
         console.log("User is not authenticated");
         return;
       }

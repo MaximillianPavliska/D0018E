@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
           books.Title,
           books.Author,
           books.Price,
+          books.Stock,
           cart_items.BookID, 
           cart_items.Quantity 
           FROM 
