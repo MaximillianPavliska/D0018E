@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
 
     // Insert the new user into the database
     await db.execute(
-      "INSERT INTO Users (email, password, username, role) VALUES (?, ?, ?, ?)",
+      "INSERT INTO users (email, password, username, role) VALUES (?, ?, ?, ?)",
       [email, password, username, "Customer"]
     );
 

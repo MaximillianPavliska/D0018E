@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../navbar";
 import configfile from "../../../Data/configReact";
-import "../styles/BookDetail.css";
+import "../styles/bookdetail.css";
 
 function BookDetail() {
   const { bookId } = useParams();

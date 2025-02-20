@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
   try {
     // Query the database for a teacher with the given email
     const [rows] = await db.execute(
-      "SELECT * FROM Users WHERE email = ? OR username = ?",
+      "SELECT * FROM users WHERE email = ? OR username = ?",
       [email, email]
     );
 
