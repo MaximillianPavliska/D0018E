@@ -5,7 +5,7 @@ const authenticate = async (req, res, next) => {
     const token = req.header('Authorization').replace('Bearer ', '');
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const [user] = await db.execute('SELECT * FROM Users WHERE UserID = ?', [decoded.userId]);
+      const [user] = await db.execute('SELECT * FROM users WHERE UserID = ?', [decoded.userId]);
       req.user = user[0];
       next();
     } catch (error) {
