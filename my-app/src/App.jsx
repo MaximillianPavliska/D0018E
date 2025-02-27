@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import BookDetail from "./pages/BookDetail";
 import configfile from "../../Data/configReact";
+import OrderDetail from "./pages/OrderDetail";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -72,6 +73,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/register" element={<Register />} />
         <Route path="/books/:bookId" element={<BookDetail />} />
+        <Route path="/:orderId" element={<OrderDetail />} />
       </Routes>
     </Router>
     </div>

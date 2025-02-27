@@ -98,8 +98,27 @@ function Cart() {
           }
         };
 
-        const Makeorder = async () => {    
-        }
+        const Makeorder = async () => {
+          try {
+              const response = await fetch(`http://${configfile.HOST}:3000/api/orders/makeorder`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({ userId: user.UserID })
+              });
+      
+              const data = await response.json();
+              if (!response.ok) {
+                  throw new Error(data.error || "Failed to place order");
+              }
+      
+              alert("Order placed successfully!");
+              fetchCartItems(); // Refresh cart
+          } catch (error) {
+              alert(error.message);
+          }
+      };
 
     
       return (
@@ -137,7 +156,7 @@ function Cart() {
                   ))}
                 </tbody>
               </table>
-              <button onClick={() => Makeorder()}>
+              <button onClick={() => Makeorder(user.UserID)}>
                 Make a Order
                 </button></>
           )}

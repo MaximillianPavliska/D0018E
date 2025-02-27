@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import configfile from "../../../Data/configReact";
+import { Link } from "react-router-dom";
 
 function Orders() {
     const [orders, setOrders] = useState([]);
@@ -32,19 +33,17 @@ const fetchOrders = async () => {
             <tr>
               <th>OrderID</th>
               <th>UserID</th>
-              <th>BookID</th>
-              <th>Quantity</th>
-              <th>Date</th>
+              <th>Order date</th>
+              <th>Total cost</th>
             </tr>
           </thead>
           <tbody>
             {orders.map(order => (
               <tr key={order.OrderID}>
-                <td>{order.OrderID}</td>
+                <td><Link to={`/${order.OrderID}`}>{order.OrderID}</Link></td>
                 <td>{order.UserID}</td>
-                <td>{order.BookID}</td>
-                <td>{order.Quantity}</td>
-                <td>{order.Date}</td>
+                <td>{order.Order_date}</td>
+                <td>{order.Total_cost}</td>
               </tr>
             ))}
           </tbody>
