@@ -1,9 +1,22 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./navbar.css";
 
+// JWT decoding helper
+const decodeToken = (token) => {
+  try {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
+  } catch {
+    return null;
+  }
+};
+
 const Navbar = () => {
   const navigate = useNavigate();
-  const isLoggedIn = localStorage.getItem("token") !== null;
+  const token = localStorage.getItem("token");
+  const decoded = token ? decodeToken(token) : null;
+  const isAdmin = decoded?.role === "Admin";
+  const isLoggedIn = !!token;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -20,18 +33,24 @@ const Navbar = () => {
         <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
           Home
         </NavLink>
-        <NavLink to="/users" className={({ isActive }) => isActive ? "active" : ""}>
-          Users
-        </NavLink>
-        <NavLink to="/orders" className={({ isActive }) => isActive ? "active" : ""}>
-          Orders
-        </NavLink>
+        {isAdmin && (
+          <>
+            <NavLink to="/users" className={({ isActive }) => isActive ? "active" : ""}>
+              Users
+            </NavLink>
+            <NavLink to="/orders" className={({ isActive }) => isActive ? "active" : ""}>
+              Orders
+            </NavLink>
+          </>
+        )}
         <NavLink to="/books" className={({ isActive }) => isActive ? "active" : ""}>
           Books
         </NavLink>
+        {isLoggedIn && (
         <NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>
           Cart
         </NavLink>
+        )}
         {isLoggedIn ? (
           <button 
             onClick={handleLogout}
