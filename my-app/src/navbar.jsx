@@ -38,9 +38,6 @@ const Navbar = () => {
             <NavLink to="/users" className={({ isActive }) => isActive ? "active" : ""}>
               Users
             </NavLink>
-            <NavLink to="/orders" className={({ isActive }) => isActive ? "active" : ""}>
-              Orders
-            </NavLink>
           </>
         )}
         <NavLink to="/books" className={({ isActive }) => isActive ? "active" : ""}>
@@ -49,6 +46,11 @@ const Navbar = () => {
         {isLoggedIn && (
         <NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>
           Cart
+        </NavLink>
+        )}
+        {isLoggedIn && (
+        <NavLink to="/orders" className={({ isActive }) => isActive ? "active" : ""}>
+          Orders
         </NavLink>
         )}
         {isLoggedIn ? (
