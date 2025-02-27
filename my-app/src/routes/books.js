@@ -74,21 +74,24 @@ router.put("/:bookId", authenticate, async (req, res) => {
 
     const bookId = req.params.bookId;
     const { Title, Author, Genre, Pages, Price, Stock } = req.body;
-    
+    console.log("1")
+
     // Validate required fields
-    if (!Title || !Author || !Genre || !Pages || !Price || !Stock) {
+    if (!Title || !Author || !Genre || !Pages || !Price ) { //Tog away stock as it can be 0
       return res.status(400).json({ error: "All fields are required" });
     }
-
+    console.log("1.2")
     // Check if book exists
     const [bookCheck] = await db.execute(
       `SELECT * FROM books WHERE BookID = ?`,
       [bookId]
     );
-    
+    console.log("2")
+
     if (bookCheck.length === 0) {
       return res.status(404).json({ error: "Book not found" });
     }
+    console.log("3")
 
     // Update book
     await db.execute(
@@ -97,6 +100,7 @@ router.put("/:bookId", authenticate, async (req, res) => {
        WHERE BookID = ?`,
       [Title, Author, Genre, Pages, Price, Stock, bookId]
     );
+    console.log("4")
 
     res.json({ 
       message: "Book updated successfully",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import configfile from "../../../Data/configReact";
+import { Link } from "react-router-dom";
 
 const OrderDetail = () => {
     const { orderId } = useParams();  // Get orderId from the URL
@@ -44,7 +45,7 @@ const OrderDetail = () => {
                         {orderItems.map(item => (
                             <tr key={item.BookID}>
                                 <td>{item.BookID}</td>
-                                <td>{item.Title}</td>
+                                <td><Link to={`/books/${item.BookID}`}>{item.Title}</Link></td>
                                 <td>{item.Author}</td>
                                 <td>{item.Quantity}</td>
                                 <td>{item.Price}</td>

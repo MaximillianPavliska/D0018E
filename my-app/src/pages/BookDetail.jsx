@@ -51,22 +51,22 @@ function BookDetail() {
       }
     };
 
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(`http://${configfile.HOST}:3000/api/reviews/${bookId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setReviews(data);
-        }
-      } catch (err) {
-        console.error("Error fetching reviews:", err);
-      }
-    };
-
     fetchUser();
     fetchBookDetails();
     fetchReviews();
   }, [bookId]);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://${configfile.HOST}:3000/api/reviews/${bookId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setReviews(data);
+      }
+    } catch (err) {
+      console.error("Error fetching reviews:", err);
+    }
+  };
 
   const handleAddToCart = async () => {
     console.log("User ID:", userId);
@@ -103,6 +103,7 @@ function BookDetail() {
         setRating(0);
         setComment("");
         alert("Review submitted successfully!");
+        fetchReviews();
       }
     } catch (err) {
       console.error("Review submission error:", err);
