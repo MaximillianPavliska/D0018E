@@ -6,24 +6,71 @@ import { Link } from "react-router-dom";
 
 function Orders() {
     const [orders, setOrders] = useState([]);
+    const [user, setUser] = useState(null);
 
 
-useEffect(() => {
-    fetchOrders();
-    }, []);
-  
-const fetchOrders = async () => {    
-    try {
-        const response = await fetch(`http://${configfile.HOST}:3000/api/orders`);
-        if (!response.ok) {
-        throw new Error("Failed to fetch books");
+    useEffect(() => {
+      fetchCurrentUser();
+      }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetchOrders();
         }
+      }, [user]); // Runs fetchOrders only when user is updated
+  
+    const fetchOrders = async () => {    
+      try {
+          const token = localStorage.getItem("token");
+          if (!token) return;
+  
+          const response = await fetch(`http://${configfile.HOST}:3000/api/orders`, {
+              method: "GET",
+              headers: {
+                  "Authorization": `Bearer ${token}`
+              }
+          });
+  
+          if (!response.ok) {
+              throw new Error("Failed to fetch orders");
+          }
+  
+          const data = await response.json();
+          const isAdmin = user?.Role === "Admin" || user?.role === "Admin";
+          console.log(isAdmin)
+          if (isAdmin) {
+              setOrders(data);  // Admin sees all orders
+          } else {
+              setOrders(data.filter(order => order.UserID === user.UserID)); // Regular user sees only their orders
+          }
+      } catch (error) {
+          console.error("Error fetching orders:", error);
+      }
+    };
+  
+
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch(`http://${configfile.HOST}:3000/home`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
         const data = await response.json();
-    setOrders(data);
-  } catch (error) {
-    setError(error.message);
-  }
-};
+        if (response.ok) {
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+  
 
      return (
        <div>
