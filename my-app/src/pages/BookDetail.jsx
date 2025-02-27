@@ -22,6 +22,7 @@ function BookDetail() {
           return;
         }
     
+        
         const response = await fetch(`http://${configfile.HOST}:3000/home`, {
           method: "GET",
           headers: {
