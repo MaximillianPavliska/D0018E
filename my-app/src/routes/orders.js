@@ -45,14 +45,14 @@ router.get("/:orderId", async (req, res) => {
 
     const connection = await db.getConnection();
     try {
-        await connection.beginTransaction(); // Start transaction
+        await connection.beginTransaction(); // Start transaction, if anyting fail it resets evertyhing it canged
 
         // Get the cart items with stock check
         const [cartItems] = await connection.execute(
-            `SELECT ci.BookID, ci.Quantity, b.Stock, b.Price
-             FROM cart_items ci
-             JOIN books b ON ci.BookID = b.BookID
-             WHERE ci.CartID = (SELECT CartID FROM cart WHERE UserID = ?) FOR UPDATE;`,
+            `SELECT cart_items.BookID, cart_items.Quantity, books.Stock, books.Price
+             FROM cart_items
+             JOIN books ON cart_items.BookID = books.BookID
+             WHERE cart_items.CartID = (SELECT CartID FROM cart WHERE UserID = ?) FOR UPDATE;`,
             [userId]
         );
 
