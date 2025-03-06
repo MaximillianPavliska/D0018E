@@ -57,6 +57,7 @@ router.get("/:orderId", async (req, res) => {
         );
 
         if (cartItems.length === 0) {
+            console.log("Empty cart")
             throw new Error("Cart is empty.");
         }
 
@@ -65,27 +66,24 @@ router.get("/:orderId", async (req, res) => {
             if (item.Quantity > item.Stock) {
                 throw new Error(`Not enough stock for Book ID: ${item.BookID}`);
             }
+            // Deduct stock
+            await connection.execute(
+              `UPDATE books SET Stock = Stock - ? WHERE BookID = ?;`,
+              [item.Quantity, item.BookID]
+          );
         }
 
-        // Deduct stock
-        for (let item of cartItems) {
-            await connection.execute(
-                `UPDATE books SET Stock = Stock - ? WHERE BookID = ?;`,
-                [item.Quantity, item.BookID]
-            );
-        }
 
         // Calculate total cost
         const totalCost = cartItems.reduce((sum, item) => sum + item.Price * item.Quantity, 0);
 
         // Insert into orders table
-        // Insert into orders table and retrieve the OrderID
         const [orderResult] = await connection.query(
           `INSERT INTO orders (UserID, Order_date, Total_cost) VALUES (?, NOW(), ?);`,
           [userId, totalCost]
         );
 
-        const orderId = orderResult.insertId; // This should now correctly retrieve the OrderID
+        const orderId = orderResult.insertId; // etrieve the OrderID
 
         if (!orderId) {
           throw new Error("Failed to retrieve OrderID.");

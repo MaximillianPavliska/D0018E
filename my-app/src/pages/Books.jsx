@@ -5,7 +5,8 @@ import configfile from "../../../Data/configReact";
 import { Link } from "react-router-dom";
 
 function Books() {
-    const [books, setBooks] = useState([]); 
+    const [books, setBooks] = useState([]); // All books from the API
+    const [filteredBooks, setFilteredBooks] = useState([]); // Books displayed after filtering
     const [user, setUser] = useState(null);
     const [searchInput, setSearchInput] = useState("");
     const [error, setError] = useState("");
@@ -21,13 +22,15 @@ function Books() {
     });
     const [showSettings, setShowSettings] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
+    const [minPrice, setMinPrice] = useState("");  // State for min price input
+    const [maxPrice, setMaxPrice] = useState("");  // State for max price input
 
     useEffect(() => {
         fetchBooks();
         fetchCurrentUser();
     }, []);
-  
-    const fetchBooks = async () => {    
+
+    const fetchBooks = async () => {
         try {
             const response = await fetch(`http://${configfile.HOST}:3000/api/books`);
             if (!response.ok) {
@@ -35,6 +38,7 @@ function Books() {
             }
             const data = await response.json();
             setBooks(data);
+            setFilteredBooks(data); // Initialize filteredBooks with all books
         } catch (error) {
             setError(error.message);
         }
@@ -78,7 +82,7 @@ function Books() {
       });
 
       const data = await response.json();
-      console.log("Data:", data);  
+      console.log("Data:", data);
       if (response.ok) {
         setUser(data.user);
         addToCart(BookID, data.user.UserID)
@@ -87,8 +91,8 @@ function Books() {
         setUser(null);
       }
     };
-  
-    const addToCart = async (BookID, userId) => {   
+
+    const addToCart = async (BookID, userId) => {
       try {
           console.log("Book", BookID)
           console.log("User", userId)
@@ -102,7 +106,7 @@ function Books() {
           if (!response.ok) {
             throw new Error("Failed to add book to cart");
           }
-      
+
           const data = await response.json();
           console.log("Book added to cart successfully:", data);
           alert("Book added to cart!");
@@ -116,11 +120,51 @@ function Books() {
       setSearchInput(e.target.value);
     };
 
+    // Handler functions to update the minPrice and maxPrice state variables
+    const handleMinPriceChange = (e) => {
+      setMinPrice(e.target.value);
+    };
+
+    const handleMaxPriceChange = (e) => {
+      setMaxPrice(e.target.value);
+    };
+
     const handleSearch = () => {
-      alert(searchInput);
+      if (searchInput.trim() === "" && minPrice.trim() === "" && maxPrice.trim() === "") {
+        setFilteredBooks(books); // Reset to show all books
+      } else {
+        let updatedBooks = [...books]; // Start with all books
+
+        // Filter by search input
+        if (searchInput.trim() !== "") {
+          updatedBooks = updatedBooks.filter(book =>
+            book.Title.toLowerCase().includes(searchInput.toLowerCase()) ||
+            book.Author.toLowerCase().includes(searchInput.toLowerCase()) ||
+            book.Genre.toLowerCase().includes(searchInput.toLowerCase())
+          );
+        }
+
+        // Filter by min price
+        if (minPrice.trim() !== "") {
+          updatedBooks = updatedBooks.filter(book => parseFloat(book.Price) >= parseFloat(minPrice));
+        }
+
+        // Filter by max price
+        if (maxPrice.trim() !== "") {
+          updatedBooks = updatedBooks.filter(book => parseFloat(book.Price) <= parseFloat(maxPrice));
+        }
+
+        setFilteredBooks(updatedBooks);
+      }
     };
 
     const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        handleSearch();
+      }
+    };
+
+    const handleKeyPressFilter = (e) => {
       if (e.key === 'Enter') {
         handleSearch();
       }
@@ -161,7 +205,7 @@ function Books() {
         const data = await response.json();
         console.log("Book added successfully:", data);
         alert("Book added successfully!");
-        
+
         // Reset form and fetch updated books
         setNewBook({
           Title: "",
@@ -211,7 +255,7 @@ function Books() {
         const data = await response.json();
         console.log("Book updated successfully:", data);
         alert("Book updated successfully!");
-        
+
         // Reset form and fetch updated books
         setEditingBook(null);
         setShowSettings(false);
@@ -226,11 +270,11 @@ function Books() {
     const handleDeleteBook = async (bookId) => {
       // Show confirmation dialog
       const confirmDelete = window.confirm("Are you sure you want to delete this book? This action cannot be undone.");
-      
+
       if (!confirmDelete) {
         return; // User canceled the deletion
       }
-      
+
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(`http://${configfile.HOST}:3000/api/books/${bookId}`, {
@@ -247,7 +291,7 @@ function Books() {
         const data = await response.json();
         console.log("Book deleted successfully:", data);
         alert("Book deleted successfully!");
-        
+
         // Reset states and fetch updated books
         setEditingBook(null);
         setSelectedBook(null);
@@ -331,6 +375,25 @@ function Books() {
             <button onClick={() => handleSearch()}>
               Search
             </button>
+          </div>
+          <div>
+          <div>
+            <input
+              type="int"
+              placeholder="Min price"
+              onChange={handleMinPriceChange}
+              onKeyDown={handleKeyPressFilter}
+              value={minPrice} />
+              <input
+              type="int"
+              placeholder="Max price"
+              onChange={handleMaxPriceChange}
+              onKeyDown={handleKeyPressFilter}
+              value={maxPrice} />
+            <button onClick={() => handleSearch()}>
+              Filter price
+            </button>
+          </div>
           </div>
           
           {isAdmin && (
@@ -554,7 +617,7 @@ function Books() {
             </tr>
           </thead>
           <tbody>
-            {books.map(book => (
+            {filteredBooks.map(book => (
               <tr key={book.BookID}>
                 <td>{book.BookID}</td>
                 <td><Link to={`/books/${book.BookID}`}>{book.Title}</Link></td>

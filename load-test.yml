@@ -1,0 +1,24 @@
+config:
+  target: "http://localhost:3000/api"  # Change if your API is running elsewhere
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 20
+
+  variables:
+    randomUserId: [1, 2, 3, 4, 5]  # List of user IDs
+    randomBookId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+
+
+scenarios:
+  - flow:
+      - post:
+          url: "/cart/addtoCart"
+          json:
+            userId: "{{ randomUserId }}"
+            BookID: "{{ randomBookId }}"
+      - think: 1  # Pause 1 second before placing order
+      - post:
+          url: "/orders/makeorder"
+          json:
+            userId: "{{ randomUserId }}"
