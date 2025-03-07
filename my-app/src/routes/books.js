@@ -47,6 +47,10 @@ router.post("/", authenticate, async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
+    if (Pages < 0 || Price < 0) {
+      return res.status(400).json({ error: "Pages and Price must be positive numbers" });
+    }
+
     // Insert new book
     const [result] = await db.execute(
       `INSERT INTO books (Title, Author, Genre, Pages, Price, Stock) 
@@ -80,6 +84,11 @@ router.put("/:bookId", authenticate, async (req, res) => {
     if (!Title || !Author || !Genre || !Pages || !Price ) { //Tog away stock as it can be 0
       return res.status(400).json({ error: "All fields are required" });
     }
+
+    if (Pages < 0 || Price < 0) {
+      return res.status(400).json({ error: "Pages and Price must be positive numbers" });
+    }
+    
     console.log("1.2")
     // Check if book exists
     const [bookCheck] = await db.execute(
